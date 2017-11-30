@@ -4,26 +4,26 @@ module Codebreaker
       @game = Game.new
       @game.start
 
-      while true do
+      loop do
         print 'Propose a guess: '
         
         begin
           case gets.strip
-            when /^exit$/
-              puts 'Thank you for the game!'
-              break
-            when /^hint$/
-              puts @game.hint || 'Unfortunately you are out of hints... :('
-            when /^([1-6]{4})$/
-              if @game.guess($1)
-                puts 'Congratulation! You have won!'
-                break unless try_again
-              else
-                puts 'You are almost there! Please, try again.'
-                puts @game.marks
-              end
+          when /^exit$/
+            puts 'Thank you for the game!'
+            break
+          when /^hint$/
+            puts @game.hint || 'Unfortunately you are out of hints... :('
+          when /^([1-6]{4})$/
+            if @game.guess($1)
+              puts 'Congratulation! You have won!'
+              break unless try_again
             else
-              puts 'Cannot comprehend... :('
+              puts 'You are almost there! Please, try again.'
+              puts @game.marks
+            end
+          else
+            puts 'Cannot comprehend... :('
           end
         rescue NoAttemptsLeft
           puts 'Unfortinately you have lost...'
@@ -39,11 +39,9 @@ module Codebreaker
       input = gets.strip.downcase
 
       if ['', 'y', 'yes'].include?(input)
-        @game.start
-        true
-      elsif ['n', 'no'].include?(input) || n <= 0
-        puts 'Thank you for the game!'
-        false
+        @game.start || true
+      elsif %w[n no].include?(input) || n <= 0
+        (puts 'Thank you for the game!') && false
       else
         try_again(n - 1)
       end

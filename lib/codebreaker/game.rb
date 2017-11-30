@@ -7,7 +7,7 @@ module Codebreaker
     end
 
     def start
-      @secret_code = 4.times.collect { roll_dice }.join
+      @secret_code = Array.new(4) { roll_dice }.join
       @hints = @secret_code.split('').shuffle
       @marker.secret_code = @secret_code
       @attempts_left = NUMBER_OF_ATTEMPTS

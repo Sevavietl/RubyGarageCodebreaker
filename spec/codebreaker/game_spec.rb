@@ -3,10 +3,16 @@ require 'spec_helper'
 module Codebreaker
   RSpec.describe Game do
     describe '#initialize' do
-      it 'sets marker during initialization' do
-        game = described_class.new
+      let(:game) { described_class.new }
 
+      it 'sets marker during initialization' do
         expect(game.instance_variable_get(:@marker)).to be_a(Marker)
+      end
+      
+      it 'sets storage during initialization' do
+        p Gem.datadir('codebreaker')
+
+        expect(game.instance_variable_get(:@storage)).to be_a(Storage)
       end
     end
 

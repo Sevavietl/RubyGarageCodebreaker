@@ -1,4 +1,5 @@
 require 'codebreaker/version'
+require 'codebreaker/storage'
 require 'codebreaker/marker'
 require 'codebreaker/game'
 require 'codebreaker/no_attempts_left'

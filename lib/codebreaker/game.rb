@@ -4,6 +4,7 @@ module Codebreaker
 
     def initialize
       @marker = Marker.new
+      @storage = Storage.new
     end
 
     def start

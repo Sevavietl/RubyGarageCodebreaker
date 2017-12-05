@@ -5,14 +5,12 @@ module Codebreaker
     describe '#initialize' do
       let(:game) { described_class.new }
 
-      it 'sets marker during initialization' do
-        expect(game.instance_variable_get(:@marker)).to be_a(Marker)
+      it 'sets matcher during initialization' do
+        expect(game.instance_variable_get(:@matcher)).to be_a(Matcher)
       end
       
-      it 'sets storage during initialization' do
-        p Gem.datadir('codebreaker')
-
-        expect(game.instance_variable_get(:@storage)).to be_a(Storage)
+      it 'sets storage during initialization (defaults to in memory storage)' do
+        expect(game.instance_variable_get(:@storage)).to be_a(Storage::InMemoryStorage)
       end
     end
 
@@ -34,10 +32,10 @@ module Codebreaker
         expect(game.instance_variable_get(:@secret_code)).to match(/[1-6]+/)
       end
 
-      it 'passes generated secret code to the marker' do
-        marker = instance_double(Marker)
-        expect(marker).to receive(:secret_code=)
-        game.instance_variable_set(:@marker, marker)
+      it 'passes generated secret code to the matcher' do
+        matcher = instance_double(Matcher)
+        expect(matcher).to receive(:secret_code=)
+        game.instance_variable_set(:@matcher, matcher)
         game.start
       end
 
@@ -53,6 +51,29 @@ module Codebreaker
 
         expect(hints).to eq(secret_code)
       end
+      
+      it 'sets game status in progress' do
+        game.start
+        expect(game.instance_variable_get(:@status)).to eq(:in_progress)
+      end
+    end
+
+    describe '#attempts_available?' do
+      let(:game) { described_class.new }
+
+      before do
+        game.start
+      end
+
+      it 'returns true when there attempts left' do
+        expect(game.attempts_available?).to eq(true)
+      end
+
+      it 'returns false when there are no attempts left and markes game as lost' do
+        game.instance_variable_set(:@attempts_left, 0)
+        expect(game.attempts_available?).to eq(false)
+        expect(game.lost?).to eq(true)
+      end
     end
 
     describe '#guess' do
@@ -62,13 +83,14 @@ module Codebreaker
         game.start
       end
 
-      it 'passes down the guess to the marker to be matched' do
+      it 'passes down the guess to the matcher to be matched' do
         guess = '1234'
-        marker = instance_double(Marker)
-        expect(marker).to receive(:match?).with(guess) { true }
-        game.instance_variable_set(:@marker, marker)
+        matcher = instance_double(Matcher)
+        expect(matcher).to receive(:match?).with(guess) { true }
+        game.instance_variable_set(:@matcher, matcher)
 
         expect(game.guess(guess)).to eq(true)
+        expect(game.won?).to eq(true)
       end
 
       it 'decreases number of attempts left' do
@@ -78,17 +100,19 @@ module Codebreaker
 
       it 'throws an exception when there are no attempts left' do
         game.instance_variable_set(:@attempts_left, 0)
-        expect { game.guess('1234') }.to raise_error(NoAttemptsLeft)
+        expect { game.guess('1234') }.to raise_error(Exceptions::NoAttemptsLeft)
+        expect(game.won?).to be(false)
+        expect(game.lost?).to be(true)
       end
     end
 
     describe '#marks' do
       let(:game) { described_class.new }
 
-      it 'requests marks from marker' do
-        marker = instance_double(Marker)
-        expect(marker).to receive(:marks) { '++++' }
-        game.instance_variable_set(:@marker, marker)
+      it 'requests marks from matcher' do
+        matcher = instance_double(Matcher)
+        expect(matcher).to receive(:marks) { '++++' }
+        game.instance_variable_set(:@matcher, matcher)
 
         expect(game.marks).to eq('++++')
       end
@@ -113,6 +137,31 @@ module Codebreaker
         game.instance_variable_set(:@hints, [])
 
         expect(game.hint).to eq(nil)
+      end
+    end
+
+    describe '#save' do
+      let(:game) { described_class.new }
+
+      before do
+        game.start
+      end
+
+      it 'throws an exception when the game is in progress' do
+        expect { game.save('John Dow') }.to raise_error(Exceptions::CannotSaveGameInProgress)
+      end
+
+      it 'saves players score with status and number of used attempts (won example)' do
+        game.instance_variable_set(:@status, :won)
+        game.save('John Dow')
+        expect(game.scores).to include(['John Dow', 0, 'won'])
+      end
+
+      it 'saves players score with status and number of used attempts (lost example)' do
+        game.instance_variable_set(:@attempts_left, 0)
+        game.instance_variable_set(:@status, :lost)
+        game.save('John Dow')
+        expect(game.scores).to include(['John Dow', 7, 'lost'])
       end
     end
   end

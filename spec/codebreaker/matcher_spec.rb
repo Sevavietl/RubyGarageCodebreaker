@@ -1,37 +1,40 @@
 require 'spec_helper'
 
 module Codebreaker
-  RSpec.describe Marker do
+  RSpec.describe Matcher do
     describe '#initialize' do
-      it 'sets default marks' do
-        marker = described_class.new
-        position_marks = marker.instance_variable_get(:@position_marks)
+      it 'sets default marker' do
+        matcher = described_class.new
 
-        expect(position_marks[:correct]).to eq('+')
-        expect(position_marks[:incorrect]).to eq('-')
+        expect(matcher.send :marker).to be_a(Markers::PlusMinusMarker)
       end
 
-      it 'accepts marks to be used in place of default ones' do
-        marker = described_class.new('foo', 'bar')
-        position_marks = marker.instance_variable_get(:@position_marks)
+      it 'accepts marker to be used in place of default one' do
+        matcher = described_class.new(Markers::ClassicalMarker.new)
 
-        expect(position_marks[:correct]).to eq('foo')
-        expect(position_marks[:incorrect]).to eq('bar')
+        expect(matcher.send :marker).to be_a(Markers::ClassicalMarker)
+      end
+      
+      it 'sets empty secret code hash' do
+        matcher = described_class.new
+
+        expect(matcher.send :secret_code_hash).to be_a(Hash)
+        expect((matcher.send :secret_code_hash).size).to eq(0)
       end
     end
 
     describe '#secret_code=' do
-      let(:marker) { described_class.new }
+      let(:matcher) { described_class.new }
 
       it 'accepts array secret code to match against' do
-        marker.secret_code = %w[1 2 3 4]
-        expect(marker.instance_variable_get(:@secret_code_hash))
+        matcher.secret_code = %w[1 2 3 4]
+        expect(matcher.send :secret_code_hash)
           .to eq('1' => [0], '2' => [1], '3' => [2], '4' => [3])
       end
 
       it 'accepts string secret code to match against' do
-        marker.secret_code = '1234'
-        expect(marker.instance_variable_get(:@secret_code_hash))
+        matcher.secret_code = '1234'
+        expect(matcher.send :secret_code_hash)
           .to eq('1' => [0], '2' => [1], '3' => [2], '4' => [3])
       end
     end

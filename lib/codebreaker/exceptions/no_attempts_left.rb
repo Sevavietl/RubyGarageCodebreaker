@@ -1,4 +1,4 @@
-module Codebreaker
+module Codebreaker::Exceptions
   class NoAttemptsLeft < StandardError
   end
 end

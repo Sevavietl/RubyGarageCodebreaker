@@ -1,4 +1,6 @@
-module Codebreaker::Exceptions
-  class CannotSaveGameInProgress < StandardError
+module Codebreaker
+  module Exceptions
+    class CannotSaveGameInProgress < StandardError
+    end
   end
 end

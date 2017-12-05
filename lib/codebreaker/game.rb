@@ -56,7 +56,7 @@ module Codebreaker
     def scores
       storage.to_a
     end
-    
+
     private
 
     attr_accessor :storage, :matcher

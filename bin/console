@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "codebreaker"
+require 'bundler/setup'
+require 'codebreaker'
 
 Codebreaker::Application.new.run

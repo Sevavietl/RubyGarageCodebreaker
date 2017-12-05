@@ -5,10 +5,10 @@ module Codebreaker
       @game.start
 
       loop do
-        if !@game.attempts_available?
+        unless @game.attempts_available?
           break unless try_again
         end
-        
+
         print 'Propose a guess: '
 
         case gets.strip
@@ -25,7 +25,9 @@ module Codebreaker
             puts @game.marks
           end
         when /^scores$/
-          @game.scores.each { |score| puts 'Name: %s, Attempts: %d, Result: %s' % score }
+          @game.scores.each do |score|
+            puts format('Name: %s, Attempts: %d, Result: %s', *score)
+          end
         else
           puts 'Cannot comprehend... :('
         end

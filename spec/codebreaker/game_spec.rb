@@ -8,7 +8,7 @@ module Codebreaker
       it 'sets matcher during initialization' do
         expect(game.instance_variable_get(:@matcher)).to be_a(Matcher)
       end
-      
+
       it 'sets storage during initialization (defaults to in memory storage)' do
         expect(game.instance_variable_get(:@storage)).to be_a(Storage::InMemoryStorage)
       end
@@ -51,7 +51,7 @@ module Codebreaker
 
         expect(hints).to eq(secret_code)
       end
-      
+
       it 'sets game status in progress' do
         game.start
         expect(game.instance_variable_get(:@status)).to eq(:in_progress)

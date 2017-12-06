@@ -4,6 +4,7 @@ require 'codebreaker/game'
 require 'codebreaker/application'
 
 require_relative 'codebreaker/exceptions/cannot_save_game_in_progress'
+require_relative 'codebreaker/exceptions/invalid_guess_format'
 require_relative 'codebreaker/exceptions/no_attempts_left'
 
 require_relative 'codebreaker/storage/in_memory_storage'

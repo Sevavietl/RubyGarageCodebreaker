@@ -12,6 +12,8 @@ module Codebreaker
     end
 
     def match?(guess)
+      raise Exceptions::InvalidGuessFormat unless valid_code?(guess)
+
       match(array_to_hash_of_positions(unify_code(guess)))
 
       @bulls == 4
@@ -24,6 +26,12 @@ module Codebreaker
     private
 
     attr_accessor :marker, :secret_code_hash
+
+    def valid_code?(code)
+      code = code.join('') if code.is_a?(Array)
+
+      code.match(/^[1-6]{4}$/)
+    end
 
     def unify_code(code)
       code.is_a?(String) ? code.split('') : code

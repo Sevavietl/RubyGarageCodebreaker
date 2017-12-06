@@ -53,6 +53,15 @@ module Codebreaker
       it 'returns false if secret code is not matched' do
         expect(marker.match?('4321')).to eq(false)
       end
+
+      invalid_guesses = %w[123 12345 foo]
+
+      invalid_guesses.each do |invalid_guess|
+        it "raises an exception on '#{invalid_guess}'" do
+          expect { marker.match?(invalid_guess) }
+            .to raise_error(Exceptions::InvalidGuessFormat)
+        end
+      end
     end
 
     describe '#marks' do

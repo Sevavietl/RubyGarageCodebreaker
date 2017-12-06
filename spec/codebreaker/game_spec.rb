@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Codebreaker::Game do
-  let(:subject) { described_class.new }
+  subject { described_class.new }
   let(:matcher) { instance_double(Codebreaker::Matcher) }
 
   describe '#initialize' do

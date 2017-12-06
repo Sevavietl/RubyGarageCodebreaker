@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Codebreaker::Markers::ClassicalMarker do
-  let(:subject) { described_class.new }
+  subject { described_class.new }
 
   describe '#mark' do
     it 'marks bulls and cows to "%d Bulls, %d Cows"' do

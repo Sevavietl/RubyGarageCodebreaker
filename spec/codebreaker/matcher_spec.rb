@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Codebreaker::Matcher do
-  let(:subject) { described_class.new }
+  subject { described_class.new }
 
   describe '#initialize' do
     context 'with default marker' do

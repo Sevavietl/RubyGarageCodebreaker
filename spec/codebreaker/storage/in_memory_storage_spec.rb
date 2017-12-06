@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Codebreaker::Storage::InMemoryStorage do
-  let(:subject) { described_class.new }
+  subject { described_class.new }
 
   describe '#initialize' do
     it 'initializes empty data array for storing records' do

@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'tempfile'
 
 RSpec.describe Codebreaker::Storage::CsvStorage do
+  subject { described_class.new(file.path) }
   let(:file) { Tempfile.new('scores') }
-  let(:subject) { described_class.new(file.path) }
 
   records = [
     {

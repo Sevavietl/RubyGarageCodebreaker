@@ -1,4 +1,6 @@
 module Codebreaker
+  # Matching mechanism to determine the number
+  # of bulls and cows in the guess.
   class Matcher
     def initialize(marker = Markers::PlusMinusMarker.new)
       @marker = marker

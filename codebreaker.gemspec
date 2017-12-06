@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['sevavietl']
   spec.email         = ['sevavietl@gmail.com']
 
-  spec.summary       = %q(Codebreaker game)
+  spec.summary       = 'Codebreaker game'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

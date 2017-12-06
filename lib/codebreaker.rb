@@ -11,7 +11,3 @@ require_relative 'codebreaker/storage/csv_storage'
 
 require_relative 'codebreaker/markers/plus_minus_marker'
 require_relative 'codebreaker/markers/classical_marker'
-
-module Codebreaker
-  # Your code goes here...
-end

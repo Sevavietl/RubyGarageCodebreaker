@@ -1,4 +1,6 @@
 module Codebreaker
+  # Console application.
+  # Should be pushed into the other gem in the future!
   class Application
     def run
       @game = Game.new

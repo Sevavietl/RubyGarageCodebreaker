@@ -1,6 +1,5 @@
 module Codebreaker
   module Exceptions
-    class CannotSaveGameInProgress < StandardError
-    end
+    CannotSaveGameInProgress = Class.new(StandardError)
   end
 end

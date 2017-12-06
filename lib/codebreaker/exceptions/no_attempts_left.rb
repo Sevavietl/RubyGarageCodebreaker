@@ -1,6 +1,5 @@
 module Codebreaker
   module Exceptions
-    class NoAttemptsLeft < StandardError
-    end
+    NoAttemptsLeft = Class.new(StandardError)
   end
 end

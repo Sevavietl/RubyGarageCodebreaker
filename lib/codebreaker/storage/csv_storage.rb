@@ -2,6 +2,7 @@ require 'csv'
 
 module Codebreaker
   module Storage
+    # Storage that uses csv file as data container.
     class CsvStorage
       def initialize(filename)
         @filename = filename

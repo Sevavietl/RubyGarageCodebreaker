@@ -1,4 +1,5 @@
 module Codebreaker
+  # Game of bulls and cows.
   class Game
     NUMBER_OF_ATTEMPTS = 7
 
@@ -50,7 +51,7 @@ module Codebreaker
     def save(name)
       raise Exceptions::CannotSaveGameInProgress if in_progress?
 
-      storage.save([name, NUMBER_OF_ATTEMPTS - @attempts_left, @status.to_s])
+      storage.save([name].concat(to_a))
     end
 
     def scores
@@ -81,6 +82,10 @@ module Codebreaker
     def lost
       @status = :lost
       false
+    end
+
+    def to_a
+      [NUMBER_OF_ATTEMPTS - @attempts_left, @status.to_s]
     end
   end
 end

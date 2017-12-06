@@ -10,7 +10,8 @@ module Codebreaker
       end
 
       it 'sets storage during initialization (defaults to in memory storage)' do
-        expect(game.instance_variable_get(:@storage)).to be_a(Storage::InMemoryStorage)
+        expect(game.instance_variable_get(:@storage))
+          .to be_a(Storage::InMemoryStorage)
       end
     end
 
@@ -69,7 +70,7 @@ module Codebreaker
         expect(game.attempts_available?).to eq(true)
       end
 
-      it 'returns false when there are no attempts left and markes game as lost' do
+      it 'returns false when there are no attempts left' do
         game.instance_variable_set(:@attempts_left, 0)
         expect(game.attempts_available?).to eq(false)
         expect(game.lost?).to eq(true)
@@ -148,16 +149,17 @@ module Codebreaker
       end
 
       it 'throws an exception when the game is in progress' do
-        expect { game.save('John Dow') }.to raise_error(Exceptions::CannotSaveGameInProgress)
+        expect { game.save('John Dow') }
+          .to raise_error(Exceptions::CannotSaveGameInProgress)
       end
 
-      it 'saves players score with status and number of used attempts (won example)' do
+      it 'saves players score (victory)' do
         game.instance_variable_set(:@status, :won)
         game.save('John Dow')
         expect(game.scores).to include(['John Dow', 0, 'won'])
       end
 
-      it 'saves players score with status and number of used attempts (lost example)' do
+      it 'saves players score (defeat)' do
         game.instance_variable_set(:@attempts_left, 0)
         game.instance_variable_set(:@status, :lost)
         game.save('John Dow')

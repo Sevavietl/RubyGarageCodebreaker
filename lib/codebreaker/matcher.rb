@@ -55,7 +55,7 @@ module Codebreaker
       @cows = 0
 
       guess_hash.each do |digit, positions|
-        next unless digit_is_present_in_the_secret_code(digit)
+        next if digit_is_not_present_in_the_secret_code(digit)
         bulls(digit, positions)
         cows(digit, positions)
       end
@@ -63,8 +63,8 @@ module Codebreaker
       @cows -= @bulls
     end
 
-    def digit_is_present_in_the_secret_code(digit)
-      !@secret_code_hash[digit].empty?
+    def digit_is_not_present_in_the_secret_code(digit)
+      @secret_code_hash[digit].empty?
     end
 
     def bulls(digit, positions)

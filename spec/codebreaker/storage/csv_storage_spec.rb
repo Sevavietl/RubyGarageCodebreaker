@@ -1,22 +1,9 @@
-require 'spec_helper'
 require 'tempfile'
+require_relative 'storage_spec'
 
 RSpec.describe Codebreaker::Storage::CsvStorage do
   subject { described_class.new(file.path) }
   let(:file) { Tempfile.new('scores') }
-
-  records = [
-    {
-      player_name: 'John Dow',
-      number_of_attempts: '3',
-      result: 'victory'
-    },
-    {
-      player_name: 'Jane Dow',
-      number_of_attempts: '5',
-      result: 'defeat'
-    }
-  ]
 
   describe '#initialize' do
     it 'accepts file name' do
@@ -27,31 +14,10 @@ RSpec.describe Codebreaker::Storage::CsvStorage do
     end
   end
 
-  describe '#save' do
+  it_behaves_like 'a storage' do
     after do
       file.close
       file.delete
-    end
-
-    records.each.with_index do |record, index|
-      it "saves record #{index + 1}" do
-        subject.save(record.values)
-        expect(file.read.chomp.split(',')).to eq(record.values)
-      end
-    end
-  end
-
-  describe '#to_a' do
-    before { records.each { |record| subject.save(record.values) } }
-
-    after do
-      file.close
-      file.delete
-    end
-
-    it 'returns an array of all scores' do
-      expect(subject.to_a).to be_an(Array)
-      expect(subject.to_a).to eq(records.map(&:values))
     end
   end
 end

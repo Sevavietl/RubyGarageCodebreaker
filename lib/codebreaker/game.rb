@@ -2,7 +2,7 @@ module Codebreaker
   class Game
     NUMBER_OF_ATTEMPTS = 7
 
-    def initialize(storage = Storage::InMemoryStorage.new, matcher = Matcher.new)
+    def initialize(storage: Storage::InMemoryStorage.new, matcher: Matcher.new)
       @storage = storage
       @matcher = matcher
     end

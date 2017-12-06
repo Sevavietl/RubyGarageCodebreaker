@@ -16,16 +16,17 @@ module Codebreaker
 
       match(array_to_hash_of_positions(unify_code(guess)))
 
-      @bulls == 4
+      bulls == 4
     end
 
     def marks
-      marker.mark(@bulls, @cows)
+      marker.mark(bulls, cows)
     end
 
     private
 
-    attr_accessor :marker, :secret_code_hash
+    attr_reader :marker, :secret_code_hash
+    attr_reader :exact_matches, :all_matches, :bulls, :cows
 
     def valid_code?(code)
       code = code.join('') if code.is_a?(Array)
@@ -51,28 +52,29 @@ module Codebreaker
     end
 
     def match(guess_hash)
-      @bulls = 0
-      @cows = 0
+      @exact_matches = 0
+      @all_matches = 0
 
       guess_hash.each do |digit, positions|
         next if digit_is_not_present_in_the_secret_code(digit)
-        bulls(digit, positions)
-        cows(digit, positions)
+        add_exact_matches(digit, positions)
+        add_all_matches(digit, positions)
       end
 
-      @cows -= @bulls
+      @bulls = exact_matches
+      @cows = all_matches - exact_matches
     end
 
     def digit_is_not_present_in_the_secret_code(digit)
-      @secret_code_hash[digit].empty?
+      secret_code_hash[digit].empty?
     end
 
-    def bulls(digit, positions)
-      @bulls += (@secret_code_hash[digit] & positions).size
+    def add_exact_matches(digit, positions)
+      @exact_matches += (secret_code_hash[digit] & positions).size
     end
 
-    def cows(digit, positions)
-      @cows += [@secret_code_hash[digit], positions].min_by(&:size).size
+    def add_all_matches(digit, positions)
+      @all_matches += [secret_code_hash[digit], positions].min_by(&:size).size
     end
   end
 end

@@ -1,15 +1,11 @@
 require 'spec_helper'
 
-module Codebreaker
-  module Markers
-    RSpec.describe PlusMinusMarker do
-      describe '#mark' do
-        let(:marker) { described_class.new }
+RSpec.describe Codebreaker::Markers::PlusMinusMarker do
+  let(:subject) { described_class.new }
 
-        it 'marks bulls and cows to pluses and minuses' do
-          expect(marker.mark(2, 2)).to eq('++--')
-        end
-      end
+  describe '#mark' do
+    it 'marks bulls and cows to pluses and minuses' do
+      expect(subject.mark(2, 2)).to eq('++--')
     end
   end
 end

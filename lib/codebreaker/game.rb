@@ -19,7 +19,7 @@ module Codebreaker
     def attempts_available?
       return false if won? || lost?
 
-      @attempts_left > 0 || lost
+      attempts_left > 0 || lost
     end
 
     def guess(guess)
@@ -32,20 +32,20 @@ module Codebreaker
       matcher.marks
     end
 
-    def hint
-      @hints.shift
+    def hint!
+      hints.shift
     end
 
     def won?
-      @status == :won
+      status == :won
     end
 
     def lost?
-      @status == :lost
+      status == :lost
     end
 
     def in_progress?
-      @status == :in_progress
+      status == :in_progress
     end
 
     def save(name)
@@ -60,7 +60,7 @@ module Codebreaker
 
     private
 
-    attr_accessor :storage, :matcher
+    attr_reader :storage, :matcher, :hints, :status, :attempts_left
 
     def generate_secret_code
       @secret_code = Array.new(4) { roll_dice }.join
